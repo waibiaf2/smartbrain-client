@@ -24,13 +24,30 @@ class  App extends Component {
             input: '',
             imageUrl: '',
             box: {},
-            user: {},
             route:'signin',
-            isSignedIn: false
+            isSignedIn: false,
+            user: {
+                id: '',
+                name: '',
+                email: '',
+                entries:0 ,
+                joined: new Date()
+            },
         }
     }
-    
-    
+
+    loadUser = (data) => {
+        this.setState({
+            user: {
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                entries: data.entries ,
+                joined: data.joined
+            }
+        })
+    }
+
     calculateFaceLocation(response) {
         const data = response.outputs[0].data.regions[0].region_info.bounding_box;
     
@@ -43,10 +60,6 @@ class  App extends Component {
         // console.log(this.state.box);
         
         return {
-           /* leftCol: faceBox.left_col * width,
-            topRow: faceBox.top_row * height,
-            rightCol: width - (faceBox.right_col * width),
-            bottomRow: height - (faceBox.bottom_row * height),*/
             leftCol: data.left_col * width,
             topRow: data.top_row * height ,
             rightCol: width - (data.right_col * width),
@@ -95,27 +108,25 @@ class  App extends Component {
                 const parser = JSON.parse(response)
                 const faceBox =  parser.outputs[0].data.regions[0].region_info.bounding_box;
                 //console.log('hi', parser.outputs[0].data.regions[0].region_info.bounding_box)
-    
-                if (!response) return;
-                // console.log(response[])
-                // if (response) {
-                //     fetch('http://localhost:3000/image', {
-                //         method: 'put',
-                //         headers: {'Content-Type': 'application/json'},
-                //         body: JSON.stringify({
-                //             id: this.state.user.id
-                //         })
-                //     })
-                //         .then(response => response.json())
-                //         .then(count => {
-                //             this.setState(Object.assign(this.state.user, { entries: count }))
-                //         })
-                // }
+
+                // console.log(response)
+                if (response) {
+                    fetch('http://localhost:3001/image', {
+                        method: 'put',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            id: this.state.user.id
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(count => {
+                            this.setState(Object.assign(this.state.user, { entries: count }))
+                        })
+                 }
                 this.displayFaceBox(this.calculateFaceLocation(parser))
             })
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
-        
     }
 
     onRouteChange = (route) => {
@@ -135,7 +146,7 @@ class  App extends Component {
             <Logo/>
 
             {/*Rank component*/}
-            <Rank/>
+            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
 
             {/*Image Link form Component for inputting the image link*/}
             <ImageLinkForm
@@ -156,8 +167,8 @@ class  App extends Component {
                 <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
                 { isSignedIn ? authorizedPage :
                     (route === 'signin' ?
-                        <Signin isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>:
-                        <RegisterForm onRouteChange={this.onRouteChange}/>
+                        <Signin loadUser={this.loadUser} isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>:
+                        <RegisterForm  onRouteChange={this.onRouteChange}/>
                     )
                 }
             </div>
