@@ -10,15 +10,19 @@ class  Signin extends Component {
 	}
 	
 	onEmailChange = (e) => {
+		e.preventDefault();
 		this.setState({signInEmail: e.target.value});
 	}
 	
 	onPasswordChange = (e) => {
+		e.preventDefault();
 		this.setState({signInPassword: e.target.value});
 	}
 	
-	onSubmitSignIn = () => {
-		// console.log(this.state);
+	onSubmitSignIn = (e) => {
+		e.preventDefault();
+		console.log(this.state);
+		console.log(this.props);
 		fetch('http://localhost:3001/signin', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
@@ -54,12 +58,12 @@ class  Signin extends Component {
 							</div>
 							<div className="mv3">
 								<label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-								<input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" onChange={this.onPasswordChange}/>
+								<input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" onChange={ this.onPasswordChange}/>
 							</div>
 						</fieldset>
 						<div className="">
 							<input
-								onClick={this.onSubmitSignIn}
+								onClick={(e) =>this.onSubmitSignIn(e)}
 								className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
 								type="submit"
 								value="Sign in"
@@ -67,9 +71,8 @@ class  Signin extends Component {
 						</div>
 						<div className="lh-copy mt3">
 							<p
-								/*onClick={() => onRouteChange('register')}*/
+								onClick={() => onRouteChange('register')}
 								className="f6 link dim black db pointer"
-								onClick={onRouteChange('home')}
 							>
 								Register
 							</p>

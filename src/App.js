@@ -117,15 +117,14 @@ class  App extends Component {
             .catch(error => console.log('error', error));
         
     }
-    
-    
+
     onRouteChange = (route) => {
+        this.setState({route: route});
         if (route === 'home') {
             this.setState({isSignedIn: true});
         } else {
             this.setState({isSignedIn: false})
         }
-        this.setState({route: route})
     }
     
     render() {
@@ -134,17 +133,17 @@ class  App extends Component {
         const authorizedPage = ( <div>
             {/*Logo*/}
             <Logo/>
-    
+
             {/*Rank component*/}
             <Rank/>
-    
+
             {/*Image Link form Component for inputting the image link*/}
             <ImageLinkForm
                 onInputChange={this.onInputChange}
                 onButtonSubmit={this.onSubmit}
             />
-    
-            {/**/}
+
+            {/*Face recognition display component*/}
             <FaceRecognition box={box} imageUrl={imageUrl}/>
         </div>);
         
@@ -155,9 +154,9 @@ class  App extends Component {
                 
                 {/*Navigation section of the application*/}
                 <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
-                { route === 'home' ? authorizedPage :
+                { isSignedIn ? authorizedPage :
                     (route === 'signin' ?
-                        <Signin onRouteChange={this.onRouteChange}/>:
+                        <Signin isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>:
                         <RegisterForm onRouteChange={this.onRouteChange}/>
                     )
                 }
