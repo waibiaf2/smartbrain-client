@@ -31,12 +31,12 @@ class RegisterForm extends  Component{
 				email: this.state.email,
 				password: this.state.password
 			})
-
 		})
 			.then(response => response.json())
-			.then(data => {
-				console.log(data);
-				if (data) {
+			.then(user => {
+				// console.log(data);
+				if (user.id) {
+					this.props.loadUsers(user);
 					this.props.onRouteChange('singin');
 				}
 			});
