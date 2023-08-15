@@ -23,7 +23,6 @@ class RegisterForm extends  Component{
 	}
 
 	onSubmitRegistrations(e) {
-		e.preventDefault()
 		fetch('http://localhost:3001/register', {
 			method: 'post',
 			headers:{'Content-Type': 'application/json'},
@@ -36,8 +35,9 @@ class RegisterForm extends  Component{
 		})
 			.then(response => response.json())
 			.then(data => {
-				if (data === 'success') {
-					this.props.onRouteChange('home');
+				console.log(data);
+				if (data) {
+					this.props.onRouteChange('singin');
 				}
 			});
 	}
@@ -79,7 +79,7 @@ class RegisterForm extends  Component{
 						</fieldset>
 						<div className="">
 							<input
-								onClick={(e) => this.onSubmitRegistrations(e)}
+								onClick={ e => this.onSubmitRegistrations(e)}
 								className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
 								type="submit"
 								value="Register"

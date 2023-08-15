@@ -32,9 +32,10 @@ class  Signin extends Component {
 			})
 		})
 			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
-					this.props.loadUser(data.user);
+			.then(user => {
+				if (user.id) {
+					console.log(user);
+					this.props.loadUser(user);
 					this.props.onRouteChange('home');
 				}
 			});
@@ -64,7 +65,7 @@ class  Signin extends Component {
 						</fieldset>
 						<div className="">
 							<input
-								onClick={(e) =>this.onSubmitSignIn(e)}
+								onClick={this.onSubmitSignIn}
 								className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
 								type="submit"
 								value="Sign in"

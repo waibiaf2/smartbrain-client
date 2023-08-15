@@ -42,10 +42,10 @@ class  App extends Component {
                 id: data.id,
                 name: data.name,
                 email: data.email,
-                entries: data.entries ,
+                entries: data.entries,
                 joined: data.joined
             }
-        })
+        });
     }
 
     calculateFaceLocation(response) {
@@ -120,7 +120,7 @@ class  App extends Component {
                     })
                         .then(response => response.json())
                         .then(count => {
-                            this.setState(Object.assign(this.state.user, { entries: count }))
+                            this.setState(Object.assign(this.state.user, { entries: count.entries }))
                         })
                  }
                 this.displayFaceBox(this.calculateFaceLocation(parser))
@@ -165,7 +165,7 @@ class  App extends Component {
                 
                 {/*Navigation section of the application*/}
                 <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
-                { isSignedIn ? authorizedPage :
+                { route === "home"  ? authorizedPage :
                     (route === 'signin' ?
                         <Signin loadUser={this.loadUser} isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>:
                         <RegisterForm  onRouteChange={this.onRouteChange}/>

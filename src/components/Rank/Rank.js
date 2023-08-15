@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Rank = (props) => {
-	const {name,entries} = props;
+const Rank = ({name,entries} ) => {
 	return (
 		<div>
 			<div className="white f3">
